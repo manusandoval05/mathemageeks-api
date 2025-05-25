@@ -2,6 +2,10 @@
 
 Ejemplo de un servidor FastAPI que se integra con la API de Anthropic.
 
+La aplicación ya está conectada a la API en https://github.com/manusandoval05/mathemageeks
+
+si se quiere personalizar y correr en local seguir estas instrucciones
+
 ## Prerrequisitos
 
 * Python 3.8 o superior instalado
@@ -25,6 +29,29 @@ Ejemplo de un servidor FastAPI que se integra con la API de Anthropic.
 
    ```bash
    pip install fastapi uvicorn python-dotenv
+   ```
+
+## Usuarios de Linux/macOS
+
+Para usuarios de Linux y macOS, los comandos son:
+
+1. Activar el entorno virtual:
+
+   ```bash
+   source venv/bin/activate
+   ```
+2. Ejecución del servidor:
+
+   ```bash
+   uvicorn main:app --reload
+   fastapi dev main.py 
+   ```
+   uvicorn para producción
+   fastapi para testeo y desarrollo
+3. Configuración de variables de entorno:
+
+   ```bash
+   echo ANTHROPIC_API_KEY=tu_clave_de_api_de_anthropic_aquí > .env
    ```
 
 ## Usuarios de Windows
@@ -51,16 +78,30 @@ Para usuarios de Windows, los comandos difieren ligeramente:
 3. Configuración de variables de entorno:
 
    ```powershell
-   echo ANTHROPIC_API_KEY=tu_clave_de_api_de_anthropic_aquí > .env
+   echo "ANTHROPIC_API_KEY=tu_clave_de_api_de_anthropic_aquí" > .env
    ```
 
 ## Variables de Entorno
 
-Antes de ejecutar el servidor, debes crear un archivo `.env` en el directorio raíz del proyecto. Este archivo debe definir tu clave de API de Anthropic:
+Antes de ejecutar el servidor, debes crear un archivo `.env` en el directorio raíz del proyecto que contenga tu clave de API de Anthropic. A continuación, los comandos para cada sistema operativo:
 
-```dotenv
-ANTHROPIC_API_KEY=tu_clave_de_api_de_anthropic_aquí
-```
+* **Linux / macOS**:
+
+  ```bash
+  echo ANTHROPIC_API_KEY=tu_clave_de_api_de_anthropic_aquí > .env
+  ```
+
+* **Windows (PowerShell)**:
+
+  ```powershell
+  echo "ANTHROPIC_API_KEY=tu_clave_de_api_de_anthropic_aquí" > .env
+  ```
+
+* **Windows (CMD)**:
+
+  ```cmd
+  echo ANTHROPIC_API_KEY=tu_clave_de_api_de_anthropic_aquí > .env
+  ```
 
 La aplicación cargará esta clave automáticamente al iniciarse.
 
