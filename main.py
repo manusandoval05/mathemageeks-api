@@ -1,9 +1,11 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
-from anthropic_tools import answer_schema, answer_schema_recursive, answer_schema_v2
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
-import anthropic
 from dotenv import load_dotenv
+import os
+import anthropic
+from anthropic_tools import answer_schema_recursive
 
 load_dotenv()
 app = FastAPI()
@@ -14,9 +16,21 @@ app.add_middleware(
   allow_headers=["*"],
 )
 
+security = HTTPBearer()
+
+def verify_bearer(
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+    token = credentials.credentials
+    expected = os.getenv("BEARER_TOKEN")
+    if not expected or expected not in token:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Invalid or missing Bearer Token"
+        )
 class ExpressionList(BaseModel):
     expressions: list[str]
-@app.post("/get-expression")
+@app.post("/get-expression", dependencies=[Depends(verify_bearer)])
 def get_expression(expressions_request: ExpressionList):
     print("Hello client")
     client = anthropic.Anthropic()
@@ -49,5 +63,3 @@ def get_expression(expressions_request: ExpressionList):
     return {
         "response": message.content[-1].input
     }
-
-# Respond only with TeX strings. You will be input a series of math expressions. I need you to find relationships between the expressions. Answer questions like is a particular instance of, has as a particular case a, is equivalent to, is a subset of, has application in, is solved with, is demonstrated with. Only answer with a new Tex string with a relationship you found. e.g. (\frac{n(n+1)}{2})^2 = \sum_{i=1}^{n} i^3. Don't use words, just mathematical notation
