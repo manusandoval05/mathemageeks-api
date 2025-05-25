@@ -2,7 +2,7 @@
 
 Ejemplo de un servidor FastAPI que se integra con la API de Anthropic.
 
-La aplicación ya está conectada a la API en https://github.com/manusandoval05/mathemageeks-app
+La aplicación ya está conectada a la API en https://github.com/manusandoval05/mathemageeks-app. Por lo que no se tiene que hacer nada con este directorio
 
 si se quiere personalizar y correr en local seguir estas instrucciones
 
